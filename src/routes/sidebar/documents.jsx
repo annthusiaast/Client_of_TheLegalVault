@@ -14,6 +14,8 @@ const Documents = () => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [docToDelete, setDocToDelete] = useState(null);
     const [users, setUsers] = useState([]);
+    const [activeTypeTab, setActiveTypeTab] = useState("All");
+
 
     // NEW: Cases + right panel state (design from Tasks page)
     const [cases, setCases] = useState([]);
@@ -134,7 +136,14 @@ const Documents = () => {
     };
 
     // Filtered list (by name, type, case id, submitted/tasked by)
-    const filteredDocs = documents.filter((doc) => {
+    const filteredDocs = documents
+    .filter((doc) => {
+        // TAB FILTER
+        if (activeTypeTab !== "All" && doc.doc_type !== activeTypeTab) {
+            return false;
+        }
+
+        // SEARCH FILTER
         const term = search.toLowerCase();
         const fields = [
             doc.doc_name,
@@ -144,8 +153,10 @@ const Documents = () => {
             getSubmitterName(doc.doc_submitted_by),
             String(doc.doc_tasked_by ?? ""),
         ].map((v) => String(v || "").toLowerCase());
+
         return fields.some((f) => f.includes(term));
     });
+
 
     // Pagination logic
     const totalPages = Math.ceil(filteredDocs.length / itemsPerPage) || 1;
@@ -158,8 +169,8 @@ const Documents = () => {
 
             {/* Header with toggle (design from Tasks) */}
             <div className="flex items-start justify-between gap-4">
-                <div>
-                    <h2 className="text-xl font-bold text-gray-800 dark:text-white sm:text-2xl">Documents</h2>
+                <div className="mb-6">
+                    <h2 className="title">Documents</h2>
                     <p className="text-sm text-gray-500">Manage and organize case-related documents</p>
                 </div>
                 <div className="flex gap-2">
@@ -184,6 +195,30 @@ const Documents = () => {
 
             {/* Main content area (search, table, pagination) */}
             <div className="space-y-4">
+            {/* Document Type Tabs */}
+                <div className="flex gap-2 mt-2">
+                    {["All", "Support", "Task"].map((type) => (
+                        <button
+                            key={type}
+                            onClick={() => {
+                                setActiveTypeTab(type);
+                                setCurrentPage(1);
+                            }}
+                            className={`
+                                px-4 py-2 text-base font-medium rounded-full transition
+                                ${
+                                    activeTypeTab === type
+                                        ? "bg-blue-600 text-white"
+                                        : "bg-gray-200 dark:bg-slate-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-600"
+                                }
+                            `}
+                        >
+                            {type}
+                        </button>
+                    ))}
+                </div>
+
+
                 {/* Search Input */}
                 <div className="card shadow-md">
                     <div className="focus:ring-0.5 flex flex-grow items-center gap-2 rounded-md border border-gray-300 bg-transparent px-3 py-2 focus-within:border-blue-600 focus-within:ring-blue-400 dark:border-slate-600 dark:focus-within:border-blue-600">

@@ -300,9 +300,9 @@ const Tasks = () => {
     return (
         <div className="space-y-5">
             {/* Header */}
-            <div>
-                <h1 className="text-2xl font-bold text-slate-800 dark:text-slate-100">Tasks</h1>
-                <p className="text-sm text-slate-500 dark:text-slate-400">Monitor and update tasks with our intuitive drag-and-drop interface.</p>
+            <div className="mb-6">
+                <h1 className="title">Tasks</h1>
+                <p className="text-sm text-gray-500">Monitor and update tasks with our intuitive drag-and-drop interface.</p>
             </div>
 
             {/* Priority Legend */}

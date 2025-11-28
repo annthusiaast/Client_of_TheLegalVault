@@ -14,6 +14,7 @@ import Registration from "./components/registration";
 
 // sidebar items
 import Cases from "./routes/sidebar/cases";
+import CaseFolder from "./components/case-folder";
 import Documents from "./routes/sidebar/documents";
 import Clients from "./routes/sidebar/clients";
 import Tasks from "./routes/sidebar/task";
@@ -62,6 +63,7 @@ export default function App() {
                     children: [
                         { index: true, element: <DashboardPage /> },
                         { path: "cases", element: <Cases /> },
+                        { path: "cases/case-folder", element: <CaseFolder /> },
                         { path: "documents", element: <Documents /> },
                         { path: "clients", element: <Clients /> },
                         { path: "clients/contacts", element: <ClientContact /> },
