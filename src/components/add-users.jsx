@@ -23,6 +23,12 @@ const AddUser = ({ onClose }) => {
     const [branches, setBranches] = useState([]);
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState("");
+    const [passwordRequirements, setPasswordRequirements] = useState({
+        hasMinLength: false,
+        hasUpperCase: false,
+        hasNumbers: false,
+        hasSpecialChar: false,
+    });
 
     const modalRef = useRef(null);
 
@@ -49,6 +55,15 @@ const AddUser = ({ onClose }) => {
         onClose();
         setProfile(null);
     });
+
+    const validatePassword = (password) => {
+        setPasswordRequirements({
+            hasMinLength: password.length >= 10,
+            hasUpperCase: /[A-Z]/.test(password),
+            hasNumbers: /\d/.test(password),
+            hasSpecialChar: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password),
+        });
+    };
 
     const handleAddUser = async (e) => {
         e.preventDefault();
@@ -206,7 +221,10 @@ const AddUser = ({ onClose }) => {
                             <input
                                 type={showPassword ? "text" : "password"}
                                 value={user_password}
-                                onChange={(e) => setPassword(e.target.value)}
+                                onChange={(e) => {
+                                    setPassword(e.target.value);
+                                    validatePassword(e.target.value);
+                                }}
                                 placeholder="Password"
                                 className="w-full rounded-md border border-gray-300 px-4 py-2 pl-10 pr-10 text-black focus:outline-none focus:ring-1 focus:ring-blue-400 dark:bg-transparent dark:text-white"
                                 required
@@ -218,6 +236,46 @@ const AddUser = ({ onClose }) => {
                                 {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                             </div>
                         </div>
+
+                        {user_password && (
+                            <div className="col-span-1 md:col-span-2 rounded-md bg-gray-50 p-3 dark:bg-slate-700">
+                                <p className="mb-2 text-xs font-semibold text-gray-700 dark:text-gray-300">Password Requirements:</p>
+                                <div className="space-y-1">
+                                    <div className="flex items-center gap-2 text-xs">
+                                        <span className={`h-4 w-4 rounded-full flex items-center justify-center ${passwordRequirements.hasMinLength ? 'bg-green-500' : 'bg-gray-300'}`}>
+                                            {passwordRequirements.hasMinLength && <span className="text-white text-xs">✓</span>}
+                                        </span>
+                                        <span className={passwordRequirements.hasMinLength ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}>
+                                            At least 10 characters
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-xs">
+                                        <span className={`h-4 w-4 rounded-full flex items-center justify-center ${passwordRequirements.hasUpperCase ? 'bg-green-500' : 'bg-gray-300'}`}>
+                                            {passwordRequirements.hasUpperCase && <span className="text-white text-xs">✓</span>}
+                                        </span>
+                                        <span className={passwordRequirements.hasUpperCase ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}>
+                                            At least one uppercase letter
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-xs">
+                                        <span className={`h-4 w-4 rounded-full flex items-center justify-center ${passwordRequirements.hasNumbers ? 'bg-green-500' : 'bg-gray-300'}`}>
+                                            {passwordRequirements.hasNumbers && <span className="text-white text-xs">✓</span>}
+                                        </span>
+                                        <span className={passwordRequirements.hasNumbers ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}>
+                                            At least one number
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-xs">
+                                        <span className={`h-4 w-4 rounded-full flex items-center justify-center ${passwordRequirements.hasSpecialChar ? 'bg-green-500' : 'bg-gray-300'}`}>
+                                            {passwordRequirements.hasSpecialChar && <span className="text-white text-xs">✓</span>}
+                                        </span>
+                                        <span className={passwordRequirements.hasSpecialChar ? 'text-green-600 dark:text-green-400' : 'text-gray-600 dark:text-gray-400'}>
+                                            At least one special character (!@#$%^&*...)
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
 
                         <div className="relative">
                             <Phone className="absolute left-3 top-2.5 h-5 w-5 text-gray-300" />
