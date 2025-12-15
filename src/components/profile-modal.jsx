@@ -17,6 +17,7 @@ export const ProfileModal = ({ onClose }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [branchName, setBranchName] = useState("Loading...");
     const [loadingBranch, setLoadingBranch] = useState(true);
+    const [passwordError, setPasswordError] = useState("");
 
     const formatDateTime = (dateString) => {
         if (!dateString) return "";
@@ -72,15 +73,29 @@ export const ProfileModal = ({ onClose }) => {
         const { name, value } = e.target;
 
         if (name === "user_phonenum") {
-            // Remove non-digit characters
             const onlyNumbers = value.replace(/\D/g, "");
-            // Limit to 11 digits
             if (onlyNumbers.length <= 11) {
                 setFormData((prev) => ({ ...prev, [name]: onlyNumbers }));
             }
-        } else {
-            setFormData((prev) => ({ ...prev, [name]: value }));
+            return;
         }
+
+        if (name === "user_password") {
+            const pwd = value || "";
+            const meetsLength = pwd.length >= 8;
+            const hasSpecial = /[^A-Za-z0-9]/.test(pwd);
+            const uppercaseCount = (pwd.match(/[A-Z]/g) || []).length;
+            const hasLowercase = /[a-z]/.test(pwd);
+            if (!(meetsLength && hasSpecial && hasLowercase && uppercaseCount === 1)) {
+                setPasswordError("Use 8+ chars, one uppercase, one special; others lowercase.");
+            } else {
+                setPasswordError("");
+            }
+            setFormData((prev) => ({ ...prev, [name]: value }));
+            return;
+        }
+
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
     const handleSave = async () => {
@@ -139,6 +154,9 @@ export const ProfileModal = ({ onClose }) => {
                 value: formatDateTime(formData.user_date_created),
             },
         ],
+        // { label: "First Name", name: "user_fname", icon: <User size={16} />, editable: true },
+        // { label: "Middle Name", name: "user_mname", icon: <User size={16} />, editable: true },
+        // { label: "Last Name", name: "user_lname", icon: <User size={16} />, editable: true },
         { label: "Email", name: "user_email", icon: <Mail size={16} />, editable: true },
         { label: "Password", name: "user_password", icon: <LockIcon size={16} />, editable: true },
         { label: "Phone", name: "user_phonenum", icon: <Phone size={16} />, editable: true },
@@ -259,6 +277,9 @@ export const ProfileModal = ({ onClose }) => {
                                         />
                                     ) : (
                                         <span>{item.name === "user_password" ? "●●●●●●●●" : (item.value ?? formData[item.name] ?? "")}</span>
+                                    )}
+                                    {isEditing && item.name === "user_password" && passwordError && (
+                                        <span className="mt-1 text-[11px] text-red-600">{passwordError}</span>
                                     )}
                                 </div>
                             </div>

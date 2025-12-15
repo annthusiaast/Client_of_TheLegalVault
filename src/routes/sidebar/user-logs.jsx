@@ -25,7 +25,7 @@ const Userlogs = () => {
                 //           : `http://localhost:3000/api/user-logs/${user.user_id}`;
 
                 const endpoint =
-                    user?.user_role === "Admin" ? "http://localhost:3000/api/user-logs" : `http://localhost:3000/api/user-logs/${user.user_id}`;
+                    user?.user_role === "Admin" ? "http://localhost:3000/api/user-logs" : `http://localhost:3000/api/user-logs/${user.user_id}`;// comment this if lawayer. paralegal and their staff recent activity logs display is needed
 
                 const res = await fetch(endpoint, {
                     method: "GET",

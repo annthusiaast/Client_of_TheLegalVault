@@ -237,7 +237,7 @@ const DashboardPage = () => {
                 Welcome back {user?.user_fname}! Here's your overview.
             </p>
 
-            {/* ---------- SUPERLAWYER SPECIAL LAYOUT ---------- */}
+            {/* ---------- SUPERLAWYER SPECIAL LAYOUT ---------s- */}
             {user.user_role === "SuperLawyer" ? (
                 <div className="w-full space-y-4">
 
