@@ -141,7 +141,7 @@ const EditCaseModal = ({ isOpen, onClose, caseData, onUpdate, user }) => {
         const hasOutstandingBalance = Number(caseData?.case_balance ?? 0) > 0;
 
         if (isTagChanging && hasOutstandingBalance) {
-            toast.error("Unsuccessful: Payment is not yet paid. Settle payment first.");
+            toast.error("Unsuccessful: Case fee is not yet paid. Settle payment first.");
             return;
         }
 
