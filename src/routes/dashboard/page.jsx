@@ -26,6 +26,7 @@ const DashboardPage = () => {
 
     const [userLogs, setUserLogs] = useState([]);
     const [overViewData, setOverviewData] = useState([]);
+    const [lawyersWithCases, setLawyersWithCases] = useState([]);
 
     const [counts, setCounts] = useState({
         users: 0,
@@ -176,6 +177,27 @@ const DashboardPage = () => {
         load();
     }, []);
 
+    // ---------- LAWYERS WITH CASE COUNTS (STAFF ONLY) ----------
+    useEffect(() => {
+        if (user?.user_role !== "Staff") return;
+
+        const fetchLawyers = async () => {
+            try {
+                const res = await fetch(
+                    "http://localhost:3000/api/lawyers-with-case-counts",
+                    { credentials: "include" }
+                );
+                if (!res.ok) throw new Error();
+                const data = await res.json();
+                setLawyersWithCases(data);
+            } catch (err) {
+                console.error("Error fetching lawyers:", err);
+            }
+        };
+
+        fetchLawyers();
+    }, [user]);
+
     // ---------- CARD COMPONENT ----------
     const Card = ({ title, value, icon }) => (
         <div className="card w-full">
@@ -264,6 +286,87 @@ const DashboardPage = () => {
                 </div>
             )}
 
+            {/* ---------- LAWYERS LIST (STAFF ONLY) ---------- */}
+            {/* {user.user_role === "Staff" && lawyersWithCases.length > 0 && (
+                <div className="flex justify-start mt-4">
+                    <div className="w-full max-w-8xl">
+                        <h2 className="mb-2 text-lg font-semibold text-slate-700 dark:text-slate-300">
+                            Lawyer Recommendation
+                        </h2>
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-[repeat(5,minmax(0,1fr))] mt-4">
+                            {lawyersWithCases.map((lawyer) => (
+                                <div
+                                    key={lawyer.user_id}
+                                    className="card hover:shadow-lg transition-shadow"
+                                >
+                                    <div className="card-body">
+                                        <div className="flex items-center gap-x-3 mb-3">
+                                            <img
+                                                src={lawyer.user_profile
+                                                    ? `http://localhost:3000${lawyer.user_profile}`
+                                                    : defaultAvatar}
+                                                className="size-12 rounded-full object-cover"
+                                            />
+                                            <div>
+                                                <p className="font-medium dark:text-slate-100">
+                                                    {lawyer.user_fname}{" "}
+                                                    {lawyer.user_mname
+                                                        ? lawyer.user_mname.charAt(0) + ". "
+                                                        : ""}
+                                                    {lawyer.user_lname}
+                                                </p>
+                                                <p className="text-xs text-slate-500">
+                                                    {lawyer.user_role || "Lawyer"}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        {/* Specializations */}
+                                        {/* {lawyer.specializations && (
+                                            <div className="mb-3 rounded-md bg-slate-50 dark:bg-slate-800 p-2">
+                                                <p className="text-xs font-medium text-slate-600 dark:text-slate-600 mb-1">
+                                                    Specializations:
+                                                </p>
+                                                <p className="text-xs text-slate-700 dark:text-slate-300">
+                                                    {lawyer.specializations}
+                                                </p>
+                                            </div>
+                                        )} */}
+
+                                        {/* <div className="space-y-2">
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-sm text-slate-600 dark:text-slate-400">
+                                                    Total Cases
+                                                </span>
+                                                <span className="text-lg font-bold text-blue-600">
+                                                    {lawyer.total_cases || 0}
+                                                </span>
+                                            </div>
+                                            <div className="flex justify-between items-center text-xs">
+                                                <span className="text-slate-500 dark:text-slate-400">
+                                                    Completed
+                                                </span>
+                                                <span className="font-semibold text-green-600 dark:text-green-400">
+                                                    {lawyer.completed_cases || 0}
+                                                </span>
+                                            </div>
+                                            <div className="flex justify-between items-center text-xs">
+                                                <span className="text-slate-500 dark:text-slate-400">
+                                                    Dismissed
+                                                </span>
+                                                <span className="font-semibold text-red-600 dark:text-red-400">
+                                                    {lawyer.dismissed_cases || 0}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )} */}
+            
             {/* ---------- CHART + ACTIVITY ---------- */}
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-7">
                 {/* Chart */}
@@ -332,8 +435,8 @@ const DashboardPage = () => {
                                             <p className="text-sm text-slate-500 dark:text-slate-400">
                                                 {log.user_log_action}
                                             </p>
-                                        </div>
-                                    </div>
+                                        </div>                
+                                     </div>
                                     <div className="text-right">
                                         <p className="text-sm font-semibold dark:text-slate-200">
                                             {new Date(log.user_log_time).toLocaleTimeString([], {

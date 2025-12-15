@@ -247,7 +247,7 @@ const Cases = () => {
 
                     {/* Case Folder Button */}
                     <button
-                        className="flex items-center gap-2 rounded-md bg-yellow-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:scale-105 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 group"
+                        className="flex items-center gap-2 rounded-md bg-yellow-500 px-5 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-200 hover:scale-105 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 group"
                         onClick={() => navigate("/cases/case-folder")}
                     >
                         <span className="transition-transform duration-200 group-hover:rotate-12 group-hover:scale-110">
@@ -390,7 +390,7 @@ const Cases = () => {
             </div>
 
             {/* Pagination */}
-            {totalPages > 1 && (
+            {/* {totalPages > 1 && (
                 <div className="mt-4 flex items-center justify-end gap-3 p-4">
                     <button
                         onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
@@ -420,7 +420,7 @@ const Cases = () => {
                         &gt;
                     </button>
                 </div>
-            )}
+            )} */}
 
             {/* View Case Modal */}
             <ViewModal

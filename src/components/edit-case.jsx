@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import toast from "react-hot-toast";
 import { useClickOutside } from "@/hooks/use-click-outside";
 
 const EditCaseModal = ({ isOpen, onClose, caseData, onUpdate, user }) => {
@@ -125,6 +126,24 @@ const EditCaseModal = ({ isOpen, onClose, caseData, onUpdate, user }) => {
 
     const handleSubmit = () => {
         if (!validate()) return;
+
+        // Block tag changes when payment is still unsettled
+        const currentTagId = (() => {
+            try {
+                const parsed = typeof caseData.case_tag === "string" ? JSON.parse(caseData.case_tag) : caseData.case_tag;
+                return parsed?.ctag_id ?? null;
+            } catch {
+                return null;
+            }
+        })();
+
+        const isTagChanging = currentTagId !== Number(formData.ctag_id || 0);
+        const hasOutstandingBalance = Number(caseData?.case_balance ?? 0) > 0;
+
+        if (isTagChanging && hasOutstandingBalance) {
+            toast.error("Unsuccessful: Payment is not yet paid. Settle payment first.");
+            return;
+        }
 
         // find the FULL tag object from caseTags based on selected ctag_id
         const newSelectedTag = caseTags.find((tag) => tag.ctag_id === parseInt(formData.ctag_id));

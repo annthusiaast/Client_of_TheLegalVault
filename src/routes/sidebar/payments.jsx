@@ -13,28 +13,35 @@ export const Payments = () => {
     const bankBranchOptions = ["BDO", "BPI", "Metrobank", "Landbank", "PNB", "Security Bank", "RCBC", "China Bank", "UnionBank", "EastWest Bank"];
 
     const branchLocationOptions = [
-        "Makati",
-        "Quezon City",
-        "Cebu",
-        "Davao",
-        "Pasig",
-        "Taguig",
-        "Pasig City",
-        "Mandaluyong",
-        "Ortigas",
-        "Alabang",
-        "iloilo",
-        "Bacolod",
-        "Cagayan de Oro",
-        "Baguio",
-        "Dumaguete",
-        "Zamboanga",
-        "General Santos",
-        "Butuan",
-        "Iligan",
-        "Marawi",
-        "Samar",
-        "Tarlac",
+        "Robinson Galleria",
+        "SM City Cebu",
+        "SM Seaside",
+        "Talisay",
+        "Tabunok",
+        "Tabada",
+        "Pardo",
+        "Carcar City",
+        "Naga",
+        "Minglanilla",
+        "Danao City",
+        "Catmon Cebu",
+        "Barili",
+        "Dumanjug",
+        "San Fernando",
+        "Fuente Osmeña",
+        "Jones Avenue",
+        "Lahug Cebu City",
+        "IT Park",
+        "Ayala Center Cebu",
+        "Emall",
+        "Escario",
+        "Banilad Cebu City",
+        "Talamban Cebu",
+        "Mandaue City",
+        "Subangdaku Mandaue",
+        "Lapulapu City",
+        "Ompad Mandaue",
+        "Colon Cebu City",
     ];
 
     // Helpers
@@ -577,7 +584,7 @@ export const Payments = () => {
                                             placeholder="Enter cheque number"
                                         />
                                     </div>
-                                    <div>
+                                    {/* <div>
                                         <label className="font-semibold dark:text-blue-700">Bank Branch *</label>
                                         <select
                                             value={chequeDetails.cheque_branch}
@@ -599,8 +606,8 @@ export const Payments = () => {
                                                 </option>
                                             ))}
                                         </select>
-                                    </div>
-                                    <div>
+                                    </div> */}
+                                    {/* <div>
                                         <label className="font-semibold dark:text-blue-700"> Branch Location *</label>
                                         <select
                                             value={chequeDetails.cheque_location}
@@ -622,7 +629,7 @@ export const Payments = () => {
                                                 </option>
                                             ))}
                                         </select>
-                                    </div>
+                                    </div> */}
                                 </>
                             )}
                         </div>

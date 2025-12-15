@@ -23,12 +23,12 @@ const AddUser = ({ onClose }) => {
     const [branches, setBranches] = useState([]);
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState("");
-    const [passwordRequirements, setPasswordRequirements] = useState({
-        hasMinLength: false,
-        hasUpperCase: false,
-        hasNumbers: false,
-        hasSpecialChar: false,
-    });
+    // const [passwordRequirements, setPasswordRequirements] = useState({
+    //     hasMinLength: false,
+    //     hasUpperCase: false,
+    //     hasNumbers: false,
+    //     hasSpecialChar: false,
+    // });
 
     const modalRef = useRef(null);
 
@@ -56,14 +56,14 @@ const AddUser = ({ onClose }) => {
         setProfile(null);
     });
 
-    const validatePassword = (password) => {
-        setPasswordRequirements({
-            hasMinLength: password.length >= 10,
-            hasUpperCase: /[A-Z]/.test(password),
-            hasNumbers: /\d/.test(password),
-            hasSpecialChar: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password),
-        });
-    };
+    // const validatePassword = (password) => {
+    //     setPasswordRequirements({
+    //         hasMinLength: password.length >= 10,
+    //         hasUpperCase: /[A-Z]/.test(password),
+    //         hasNumbers: /\d/.test(password),
+    //         hasSpecialChar: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password),
+    //     });
+    // };
 
     const handleAddUser = async (e) => {
         e.preventDefault();
@@ -223,7 +223,7 @@ const AddUser = ({ onClose }) => {
                                 value={user_password}
                                 onChange={(e) => {
                                     setPassword(e.target.value);
-                                    validatePassword(e.target.value);
+                                    // validatePassword(e.target.value);
                                 }}
                                 placeholder="Password"
                                 className="w-full rounded-md border border-gray-300 px-4 py-2 pl-10 pr-10 text-black focus:outline-none focus:ring-1 focus:ring-blue-400 dark:bg-transparent dark:text-white"
@@ -236,7 +236,7 @@ const AddUser = ({ onClose }) => {
                                 {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                             </div>
                         </div>
-
+{/* 
                         {user_password && (
                             <div className="col-span-1 md:col-span-2 rounded-md bg-gray-50 p-3 dark:bg-slate-700">
                                 <p className="mb-2 text-xs font-semibold text-gray-700 dark:text-gray-300">Password Requirements:</p>
@@ -275,7 +275,7 @@ const AddUser = ({ onClose }) => {
                                     </div>
                                 </div>
                             </div>
-                        )}
+                        )} */}
 
                         <div className="relative">
                             <Phone className="absolute left-3 top-2.5 h-5 w-5 text-gray-300" />
